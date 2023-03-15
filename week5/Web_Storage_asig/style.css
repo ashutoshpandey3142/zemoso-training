@@ -1,0 +1,27 @@
+*{
+    background-color: cadetblue;
+}
+#container{
+    margin: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+}
+.score{
+    border: 2px solid brown;
+    background-color: blueviolet;
+    text-align: center;
+    color: chartreuse;
+}
+.heading{
+    font-size: 3rem;
+    background-color: blueviolet;
+    /* color: chartreuse; */
+}
+.count{
+    font-size: 2rem;
+    background-color: blueviolet;
+}
+#btn{
+    font-size: 2rem;
+}
