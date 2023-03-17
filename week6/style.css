@@ -1,0 +1,84 @@
+.wholebody{
+    display: flex;
+    flex-direction: row;
+}
+.tablecontainer{
+    width: 25%;
+    border-right: 1px solid;
+}
+.menucontainer{
+    width: 75%;
+    border-left: 1px solid;
+    height: 60rem;
+    overflow: scroll;
+}
+
+.table, .tablenum{
+    box-shadow: 0.3rem .3rem .5rem 0 gray;
+    margin: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+}
+div.active{
+    background-color: yellow;
+}
+input{
+    width: 80%;
+    margin-left: 1rem;
+}
+table ,th,tr,td{
+    border: 1px solid black;
+    width: 100vh;
+}
+  
+.pophead{
+background-color:blue;
+width: 100vh;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+}
+.pophead h2{
+font-size: .9rem;
+}
+.pophead span{
+width: 1.5rem;
+font-size: 2rem;
+border: 1px solid black;
+cursor: pointer;
+}
+.popupcontainer{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px solid black;
+    z-index: 10;
+    background-color: white;
+    height: 45vh;
+    overflow-y: scroll;   
+    transform: translate(-50%,-50%) scale(0);
+}
+.popupopen{
+    transform: translate(-50%,-50%) scale(1);
+}
+.overlay{
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, .5);
+    opacity: 0;
+    pointer-events:none;
+}
+.overlayon{
+    pointer-events: all;
+    opacity: 1;
+  }
+.contbtn{
+    margin-top: 5px;
+    width: 100vh;
+    font-size: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
