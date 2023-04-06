@@ -158,7 +158,7 @@ function popupCreation(){
         var over=document.createElement('div');
         over.className="overlay";
         popupParent.appendChild(over);
-        
+ 
 }
 //create popup
 popupCreation();
@@ -248,31 +248,20 @@ function drop(event){
     const item_cost=items[item_num].cost;
     var mytable=(event.target.id).substring(6,7);
     // getting table name
-    console.log(event.target.id);
-    updateTable(mytable,item_cost,1,1,false);
+    // console.log(event.target.id);
+    updateTable(mytable,item_cost,1,1);
     // console.log(item_num)
-    updateitems(event,item_name,item_cost,item_num);
+    updateitems(event.target.id,item_name,item_cost,1,false);
 }  
 
 
 // update tables when drop any element on it
-function updateTable(id,item_cost,zero,count,changeByInp){
+function updateTable(id,item_cost,zero,count){
     var getTable=document.getElementById(`table-${id}`);
     var currcost=+(getTable.querySelector('.rupees').innerText);
-    console.log("ur:"+currcost);
+    // console.log("curr cost:"+currcost);
     var itemcount=+(getTable.querySelector('.numitem').textContent);
-    if(changeByInp){
-        item_cost=0;
-        count=0;
-        let templist=table[id-1].itemList
-        for(let i=0;i<templist.length;i++){
-            item_cost+=(templist[i].item_cost*templist[i].count);
-            count+=templist[i].count;
-        }
-        currcost=item_cost;
-        itemcount=count;
-    }
-    else{
+    
         //deletion part
         if(zero==0){
             currcost-=(+(item_cost));
@@ -285,7 +274,6 @@ function updateTable(id,item_cost,zero,count,changeByInp){
             itemcount+=count;
         }
 
-    }
     table[(getTable.id).split("-")[1]].amt=+(currcost);
     getTable.querySelector('.rupees').innerText=currcost;
     getTable.querySelector('.numitem').textContent=itemcount
@@ -295,12 +283,11 @@ function updateTable(id,item_cost,zero,count,changeByInp){
 
 
 let global=false;
-function updateitems(event,item_name,item_cost,item_num){
-        
+function updateitems(currid,item_name,item_cost,del,changeByInp){
+    console.log(currid)
     // let newitempresent=false;
-    let tab=(event.target.id).split("-")[1];
+    let tab=(currid).split("-")[1];
     let itempres=false;
-    // console.log(table[tab-1].itemList[0]);
     for(let i=0;i<table[tab-1].itemList.length;i++){
         if(item_name==table[tab-1].itemList[i].item_name) {
             itempres=true;
@@ -316,16 +303,20 @@ function updateitems(event,item_name,item_cost,item_num){
     }else{
         for(let i=0;i<table[tab-1].itemList.length;i++){
             if(item_name==table[tab-1].itemList[i].item_name) {
-                table[tab-1].itemList[i].item_cost=+(table[tab-1].itemList[i].item_cost) + item_cost;
-                table[tab-1].itemList[i].count=+(table[tab-1].itemList[i].count) + 1;
+                if(del==0) table[tab-1].itemList[i].item_cost=+(table[tab-1].itemList[i].item_cost) - item_cost;
+                else table[tab-1].itemList[i].item_cost=+(table[tab-1].itemList[i].item_cost) + item_cost;
+
+                if(changeByInp) table[tab-1].itemList[i].count=+(table[tab-1].itemList[i].count);
+                else table[tab-1].itemList[i].count=+(table[tab-1].itemList[i].count) + 1;
             }
         }
     }
+    console.log(table[tab-1].itemList[0]);
 }
 
 
 function updatePopup(currid){
-    console.log(currid)
+    // console.log(currid)
     var mytableid=(currid).split("-")[1];
     var mytab=document.getElementById('tableId');
     mytab.innerHTML=`
@@ -339,7 +330,7 @@ function updatePopup(currid){
         `;
     var body=document.createElement('tbody');
     mytab.appendChild(body);
-    console.log(mytab)
+    // console.log(mytab)
     var itemList=table[mytableid-1].itemList;
     let serialnum=0;
     for(let i=0;i<itemList.length;i++){
@@ -362,8 +353,9 @@ function updatePopup(currid){
     // h3.innerHTML=`Total Cost:`   
     let total=0;
     for(let i=0;i<itemList.length;i++){
-        total+=(itemList[i].count*itemList[i].item_cost);
+        total+=(itemList[i].item_cost);
     }
+    // console.log(total)
     h3.innerHTML=`Total Cost:${total}`;
 
 }
@@ -386,18 +378,30 @@ function deleteFunction(currid,i){
 function change(currid,i,event){
     let prev=table[currid-1].itemList[i].count;
     let c=table[currid-1].itemList[i].count;
+    let item_name=table[currid-1].itemList[i].item_name;
+    console.log(prev, item_name,event.value)
     table[currid-1].itemList[i].count = +(event.value);
     let ic=table[currid-1].itemList[i].item_cost;
+    for(let i=0;i<items.length;i++){
+        // console.log(items[i].menu_item==item_name)
+        if(items[i].menu_item==item_name){
+            ic=items[i].cost
+            // console.log(item.cost)
+        }
+    }
     let val=1;
     if(prev>(+event.value)) {
         val=0;
         c=c-(+event.value)
-        ic=c*ic;
+        // ic=c*ic;
     }else{
         c=(+event.value)-c
     }
-    console.log(ic);
-    updateTable(currid,ic,val,c,true);
+    // console.log(ic);
+    // table[currid-1].itemList[i].item_cost=ic;
+    // console.log(table[currid-1].itemList[i].item_cost);
+    updateTable(currid,ic,val,c);
     currid=`table-${currid}`;
+    updateitems(currid,item_name,ic,val,true);
     updatePopup(currid);   
 }
